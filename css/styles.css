@@ -1,0 +1,62 @@
+/* Custom tweaks on top of Tailwind. Keep minimal. */
+
+/* Phrase chip — clickable Spanish text that plays audio */
+.phrase {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.1s;
+}
+.phrase:hover {
+  background-color: rgb(15 118 110 / 0.2);
+}
+.phrase:active {
+  background-color: rgb(15 118 110 / 0.4);
+}
+.phrase::before {
+  content: "🔊";
+  font-size: 0.75rem;
+  opacity: 0.5;
+}
+.phrase.playing::before {
+  content: "🔈";
+  opacity: 1;
+}
+
+/* Print styles for cheat sheet */
+@media print {
+  header, footer, nav { display: none !important; }
+  body { background: white !important; color: black !important; }
+  .print-hide { display: none !important; }
+  .phrase::before { display: none; }
+  main { max-width: none; padding: 0; }
+}
+
+/* Subtle card flip animation */
+.flip {
+  perspective: 800px;
+}
+.flip-inner {
+  position: relative;
+  transition: transform 0.4s;
+  transform-style: preserve-3d;
+}
+.flip.flipped .flip-inner {
+  transform: rotateY(180deg);
+}
+.flip-face {
+  backface-visibility: hidden;
+}
+.flip-back {
+  transform: rotateY(180deg);
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+}
+
+/* Progress ring */
+.ring-track { fill: none; stroke: rgb(30 41 59); stroke-width: 8; }
+.ring-value { fill: none; stroke: rgb(16 185 129); stroke-width: 8; stroke-linecap: round;
+              transform: rotate(-90deg); transform-origin: center; transition: stroke-dashoffset 0.4s; }
