@@ -431,7 +431,7 @@ function renderFlashcardSession(slug) {
         <div id="fc-en" class="text-xl text-emerald-300 mt-4 hidden"></div>
         <div id="fc-notes" class="text-xs text-amber-400 mt-3 hidden"></div>
         <div id="fc-box" class="text-xs text-slate-500 mt-4"></div>
-        <div id="fc-hint" class="text-xs text-slate-500 mt-4">tap card to flip · or press space</div>
+        <div id="fc-hint" class="text-xs text-slate-500 mt-4">tap card (or space) to flip · 1/J = again · 2/K = got it · P = replay</div>
       </div>
 
       <div id="fc-actions" class="mt-4 flex gap-3 justify-center">
@@ -530,7 +530,7 @@ function renderFlashcardSession(slug) {
   // Keyboard shortcuts
   const keyHandler = (e) => {
     if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
-    if (e.key === " ") { e.preventDefault(); flipped ? gradeCurrent("correct") : flip(); }
+    if (e.key === " ") { e.preventDefault(); if (!flipped) flip(); }
     else if (e.key === "1" || e.key.toLowerCase() === "j") gradeCurrent("wrong");
     else if (e.key === "2" || e.key.toLowerCase() === "k") gradeCurrent("correct");
     else if (e.key.toLowerCase() === "p") {
@@ -539,8 +539,7 @@ function renderFlashcardSession(slug) {
     }
   };
   document.addEventListener("keydown", keyHandler);
-  // Clean up on unload (next route will replace DOM)
-  wrapper.addEventListener("remove", () => document.removeEventListener("keydown", keyHandler));
+  // Clean up keyboard listener when user navigates away (one-shot)
   window.addEventListener("hashchange", () => document.removeEventListener("keydown", keyHandler), { once: true });
 
   renderCard();
